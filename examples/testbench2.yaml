@@ -1,0 +1,18 @@
+# example from https://etd.ohiolink.edu/!etd.send_file?accession=ucin1446547203&disposition=inline
+# fig A.1, pg 71
+algo: 
+  - edf
+  - rms
+tasks:
+  - name: task1
+    exec_time: 45
+    deadline: 135
+    period: 135
+  - name: task2
+    exec_time: 50
+    deadline: 150
+    period: 150
+  - name: task3
+    exec_time: 80
+    deadline: 360
+    period: 360
