@@ -214,6 +214,24 @@ def plot_gantt(sched):
     https://plotly.com/python-api-reference/generated/plotly.express.timeline.html
     https://plotly.com/python-api-reference/generated/plotly.graph_objects.html#plotly.graph_objects.Figure
 
+    TODO: add a slider
+    https://plotly.com/python/animations/
+    https://plotly.com/python/sliders/
+
+    TODO: provide an alternative plotting option with matplotlib
+    https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/broken_barh.html
+
+    TODO: other alternative plots
+    https://github.com/ehsan-elwan/RM-Task-Scheduling/blob/master/Plotter.py
+    https://github.com/johnharakas/scheduling-des/blob/sim-plotting/Qt_Canvas.py
+    https://github.com/esalehi1996/Realtime_Scheduling_python/blob/master/main.py
+    https://github.com/carlosgeos/uniprocessor-scheduler/blob/master/src/simulation.py
+    https://github.com/ksameersrk/rt-scheduler/blob/master/analysis/plot_graph.py
+    https://github.com/guilyx/gantt-trampoline/blob/master/lib/GanttPlot.py
+
+    TODO: export figure with the plot
+    https://plotly.com/python/static-image-export/
+
     Args:
         sched: schedule list for each task
 
@@ -287,5 +305,6 @@ def plot_gantt(sched):
             'tickvals' : date_ticks,
             'ticktext' : num_tick_labels
             })
-    
+
+    # it will show in the browser
     fig.show()
