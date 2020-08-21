@@ -51,10 +51,15 @@ else:
     print ("ERROR: unsupported scheduling algorithm", args.sched)
     sys.exit(1)
 
-import plotly as pl
 
-print (pl.__version__)
+# loading and parsing the YAML file
+with open('examples/sched2.yaml') as f:
+    sched = yaml.load(f, Loader=yaml.FullLoader)
 
-plot_gantt()
+print ('PRINTING THE INPUT SCHEDULING FILE:')
+pp = pprint.PrettyPrinter(indent=4)
+pp.pprint(sched)
+
+plot_gantt(sched)
 
 
