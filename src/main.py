@@ -24,7 +24,7 @@ with open(args.file.name) as f:
 
 print ('PRINTING THE INPUT CONFIGURATION FILE:')
 pp = pprint.PrettyPrinter(indent=4)
-#pp.pprint(docs)
+pp.pprint(docs)
 
 #pp.pprint(docs['algo'][0])
 #pp.pprint(docs['tasks'][0]['name'])
@@ -42,22 +42,20 @@ if not valid_algo:
     sys.exit(1)
 
 
-# selecting the scheduling
+# selecting and running the scheduling algorithm
 if args.sched == 'rms':
-    rms(docs['tasks'])
+    sched = rms(docs['tasks'])
 elif args.sched == 'edf':
-    edf(docs['tasks'])
+    sched = edf(docs['tasks'])
 else:
     print ("ERROR: unsupported scheduling algorithm", args.sched)
     sys.exit(1)
-
 
 # loading and parsing the YAML file
 with open('examples/sched2.yaml') as f:
     sched = yaml.load(f, Loader=yaml.FullLoader)
 
-print ('PRINTING THE INPUT SCHEDULING FILE:')
-pp = pprint.PrettyPrinter(indent=4)
+print ('PRINTING THE GENERATED SCHEDULING FILE:')
 pp.pprint(sched)
 
 plot_gantt(sched)

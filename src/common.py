@@ -29,6 +29,39 @@ def check_rms_edf(task_list):
     Args:
         task_list: list of task descriptors
 
+    Supported task_list in Python format:
+    {   'algo': ['edf', 'rms'],
+        'tasks': [   {   'deadline': 135,
+                        'exec_time': 45,
+                        'name': 'task1',
+                        'period': 135},
+                    {   'deadline': 150,
+                        'exec_time': 50,
+                        'name': 'task2',
+                        'period': 150},
+                    {   'deadline': 360,
+                        'exec_time': 80,
+                        'name': 'task3',
+                        'period': 360}]}
+
+    Supported task_list in YAML format:
+    algo: 
+    - edf
+    - rms
+    tasks:
+    - name: task1
+        exec_time: 45
+        deadline: 135
+        period: 135
+    - name: task2
+        exec_time: 50
+        deadline: 150
+        period: 150
+    - name: task3
+        exec_time: 80
+        deadline: 360
+        period: 360    
+
     Returns:
         bool: The return value. True for success, False otherwise.
     """
@@ -126,10 +159,10 @@ def check_sched(sched):
                 print ("\nERROR: the initial job time must be lower than the the final time. Got", job[0], job[1])
                 return False
             # zero is not supported in the plotting function
-            if job[0] > 0:
+            if job[0] <= 0:
                 print ("\nERROR: the initial job time must be greater than 0. Got", job[0])
                 return False
-            if job[1] > 0:
+            if job[1] <= 0:
                 print ("\nERROR: the initial job time must be greater than 0. Got", job[1])
                 return False
 
@@ -177,35 +210,45 @@ def convert_to_datetime(x):
 def plot_gantt(sched):
     """Use the plotly lib to plot the gantt chart
     based on: https://stackoverflow.com/questions/57686684/using-numerical-values-in-plotly-for-creating-gantt-charts
+    https://plotly.com/python/gantt/
+    https://plotly.com/python-api-reference/generated/plotly.express.timeline.html
+    https://plotly.com/python-api-reference/generated/plotly.graph_objects.html#plotly.graph_objects.Figure
 
     Args:
         sched: schedule list for each task
 
         sched example in python format:
-        {   'sched': [  {'jobs': [[0, 3], [5, 7]], 'name': 'task1'},
-                        {'jobs': [[4, 6]], 'name': 'task2'},
-                        {'jobs': [[3, 4]], 'name': 'task3'}]}
+        {   'sched': [   {'color': 'yellow', 'jobs': [[1, 3], [5, 7]], 'name': 'task1'},
+                        {'color': 'green', 'jobs': [[4, 6]], 'name': 'task2'},
+                        {'jobs': [[3, 4]], 'name': 'task3'}],
+            'title': 'scheduling with RMS'}
         
         sched example in YAML:
+            title: "scheduling with RMS"
             sched:
                 - name: task1
-                    jobs: 
-                    - [0, 3]
+                  color: 'yellow'
+                  jobs: 
+                    - [1, 3]
                     - [5, 7]
                 - name: task2
-                    jobs: 
+                  color: 'green'
+                  jobs: 
                     - [4,6]
                 - name: task3
                     jobs: 
                     - [3,4]
+        The fields 'title' and 'color' are optional.
 
     Returns:
         None
     """
 
     # check plotly version
-    if versiontuple(px.__version__) < versiontuple("4.9.0"):
-        print ("ERROR: the scheduling plotting function requires plotly 4.9.0 or newer. Found", px.__version__)
+    import plotly as pl
+    #print (pl.__version__)
+    if versiontuple(pl.__version__) < versiontuple("4.9.0"):
+        print ("ERROR: the scheduling plotting function requires plotly 4.9.0 or newer. Found", pl.__version__)
         return False
 
     # check the input argument
@@ -216,34 +259,33 @@ def plot_gantt(sched):
     # create the data format required by pandas DataFrame
     list_tasks = []
     for task in sched['sched']:
+        # color is not mandatory for a task
+        if 'color' in  task:
+            task_color = task['color']
+        else:
+            task_color = 'blue' # the default color
+        
         for job in task['jobs']:
-            list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), Finish=convert_to_datetime(job[1])))
+            list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), Finish=convert_to_datetime(job[1]), Color = task_color))
 
-    #list_tasks.append(dict(Task="Job A", Start=convert_to_datetime(1), Finish=convert_to_datetime(3)))
-    #list_tasks.append(dict(Task="Job A", Start=convert_to_datetime(5), Finish=convert_to_datetime(7)))
-    #list_tasks.append(dict(Task="Job B", Start=convert_to_datetime(4), Finish=convert_to_datetime(6)))
-    #list_tasks.append(dict(Task="Job C", Start=convert_to_datetime(3), Finish=convert_to_datetime(4)))
-
-    #list_tasks.append(dict(Task="Job A", Start=convert_to_datetime(1), Finish=convert_to_datetime(3)))
-    #list_tasks.append(dict(Task="Job A", Start=convert_to_datetime(4), Finish=convert_to_datetime(5)))
-    #list_tasks.append(dict(Task="Job C", Start=convert_to_datetime(2), Finish=convert_to_datetime(6)))
-
-    #df = pd.DataFrame([
-    #    dict(Task="Job A", Start=convert_to_datetime(1), Finish=convert_to_datetime(3)),
-    #    dict(Task="Job A", Start=convert_to_datetime(4), Finish=convert_to_datetime(5)),
-    #    dict(Task="Job C", Start=convert_to_datetime(2), Finish=convert_to_datetime(6))
-    #])
-    #print (list_tasks)
-
+    # creating the pandas DataFrame requred by plotly
     df = pd.DataFrame(list_tasks)
 
-    fig = px.timeline(df, x_start="Start", x_end="Finish", y="Task")
+    # title is optional
+    if 'title' in  sched:
+        chart_title = sched['title']
+    else:
+        chart_title = ''
+
+    fig = px.timeline(df, title = chart_title, x_start="Start", x_end="Finish", color = "Color", y="Task")
     fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
 
+    # this part converts dates into ticks
     num_tick_labels = np.linspace(start = 0, stop = 10, num = 11, dtype = int)
     date_ticks = [convert_to_datetime(x) for x in num_tick_labels]
     fig.layout.xaxis.update({
             'tickvals' : date_ticks,
             'ticktext' : num_tick_labels
             })
+    
     fig.show()
