@@ -8,13 +8,16 @@ Supported task scheduling algorithms:
     - Earliest Deadline First (EDF) algorithm
 
 
-# Depedencies
+# Creating the conda environment
 
-    conda create --name sched python=3.6
-    conda activate sched
+    conda create --name yatss python=3.6
+    conda activate yatss
     conda install pandas
-    conda install pyymal
+    conda install pyyaml
     conda install plotly
+    conda install sphinx
+    pip install sphinx-rtd-theme
+    pip install sphinx-autodoc
 
 # Install and running
 

@@ -1,4 +1,4 @@
-from common import check_rms_edf, lcm
+from common import check_rms_edf, sched_list_2_sched_dict
 import numpy as np
 import sys
 
@@ -97,42 +97,6 @@ def rms(task_list, sim_time=0, verbose=False):
         )
     )
 
-    # creating the data structrute for scheduling
-    sched = {}
-    sched['title'] = 'Some title'
-    sched['sched'] = []
-    for task in task_list:
-        sched_task = {}
-        sched_task['name'] = task['name']
-        sched_task['jobs'] = []
-        if task['name'] == 'idle':
-            sched_task['color'] = 'green'
-        else:
-            sched_task['color'] = 'blue'
-        if verbose:
-            print ("#############", task['name'], "#############")
-            print (sched_task)
-        #search for this task in the schedule
-        idx = 0
-        while idx < len(schedule):
-            if task['name'] == schedule[idx]:
-                start_time = idx
-                if idx != len(schedule):
-                    for idx2, ready_task2 in enumerate(schedule[idx:]):
-                        end_time = idx+idx2
-                        if task['name'] != ready_task2:
-                            #skip the start time to the next perior
-                            idx = end_time
-                            break
-                else:
-                    end_time = idx
-                #end_time +=1
-                #print (task['name'], "[",start_time,end_time,"]")
-                sched_task['jobs'].append([start_time,end_time])
-            idx +=1
-        sched['sched'].append(sched_task)
-        if verbose:
-            print (sched_task)
-            print ("##########################")
+    sched = sched_list_2_sched_dict(task_list,schedule,verbose)
 
     return sched

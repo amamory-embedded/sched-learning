@@ -320,3 +320,51 @@ def plot_gantt(sched, verbose = False):
 
     # it will show in the browser
     fig.show()
+
+def sched_list_2_sched_dict(tasks,sched_list,verbose=False):
+    """Convert a scheduling in format of a list into a schedule in format of dictionary
+
+    Args:
+        tasks : list of tasks
+        sched_list : schedule list
+
+    Returns:
+        sched_dict: The return tuple, e.g. (2,3,1)
+    """       
+    # creating the data structrute for scheduling
+    sched = {}
+    sched['title'] = 'Some title'
+    sched['sched'] = []
+    for task in tasks:
+        sched_task = {}
+        sched_task['name'] = task['name']
+        sched_task['jobs'] = []
+        if task['name'] == 'idle':
+            sched_task['color'] = 'green'
+        else:
+            sched_task['color'] = 'blue'
+        if verbose:
+            print ("#############", task['name'], "#############")
+            print (sched_task)
+        #search for this task in the schedule
+        idx = 0
+        while idx < len(sched_list):
+            if task['name'] == sched_list[idx]:
+                start_time = idx
+                if idx != len(sched_list):
+                    for idx2, ready_task2 in enumerate(sched_list[idx:]):
+                        end_time = idx+idx2
+                        if task['name'] != ready_task2:
+                            #skip the start time to the next period
+                            idx = end_time
+                            break
+                else:
+                    end_time = idx
+                #print (task['name'], "[",start_time,end_time,"]")
+                sched_task['jobs'].append([start_time,end_time])
+            idx +=1
+        sched['sched'].append(sched_task)
+        if verbose:
+            print (sched_task)
+            print ("##########################")
+    return sched

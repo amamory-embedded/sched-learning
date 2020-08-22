@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+#Visual Code studio
+.vscode/**
+
+
 # Distribution / packaging
 .Python
 build/
@@ -70,6 +74,9 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+_build
+_static
+_templates
 
 # PyBuilder
 target/
