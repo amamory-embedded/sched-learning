@@ -1,6 +1,6 @@
 import sys
 from math import gcd
-from datetime import datetime
+import datetime
 # for plotting
 import plotly.express as px
 import pandas as pd
@@ -155,14 +155,14 @@ def check_sched(sched):
             if type(job[0]) is not int or type(job[1]) is not int:
                 print ("\nERROR: jobs must be int initial and final times. Got", type(job[0]), type(job[1]))
                 return False
-            if job[0] >= job[1]:
+            if job[0] > job[1]:
                 print ("\nERROR: the initial job time must be lower than the the final time. Got", job[0], job[1])
                 return False
             # zero is not supported in the plotting function
-            if job[0] <= 0:
+            if job[0] < 0:
                 print ("\nERROR: the initial job time must be greater than 0. Got", job[0])
                 return False
-            if job[1] <= 0:
+            if job[1] < 0:
                 print ("\nERROR: the initial job time must be greater than 0. Got", job[1])
                 return False
 
@@ -191,19 +191,18 @@ def lcm (int_list):
 
 
 def convert_to_datetime(x):
-    """Auxiliar function used to plot the gantt chart
+    """Auxiliar function used to plot the gantt chart. It converts a natural number to date, where 0 corresponds to datetime(1970, 1, 1)
 
     Args:
         x: interger value
 
     Returns:
-        date_time
+        datetime
     """
 
-    #data_conv = datetime.fromtimestamp(31536000+x*24*3600).strftime("%Y-%d-%m")
-    #print (data_conv)
-    #return data_conv
-    return datetime.fromtimestamp(31536000+x*24*3600).strftime("%Y-%d-%m")
+    #data_conv = datetime.datetime.fromtimestamp(31536000+x*24*3600).strftime("%Y-%m-%d")
+    data_conv2 = (datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc) + datetime.timedelta(days=x)).strftime("%Y-%m-%d")
+    return data_conv2
 
 
 
@@ -213,24 +212,6 @@ def plot_gantt(sched):
     https://plotly.com/python/gantt/
     https://plotly.com/python-api-reference/generated/plotly.express.timeline.html
     https://plotly.com/python-api-reference/generated/plotly.graph_objects.html#plotly.graph_objects.Figure
-
-    TODO: add a slider
-    https://plotly.com/python/animations/
-    https://plotly.com/python/sliders/
-
-    TODO: provide an alternative plotting option with matplotlib
-    https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/broken_barh.html
-
-    TODO: other alternative plots
-    https://github.com/ehsan-elwan/RM-Task-Scheduling/blob/master/Plotter.py
-    https://github.com/johnharakas/scheduling-des/blob/sim-plotting/Qt_Canvas.py
-    https://github.com/esalehi1996/Realtime_Scheduling_python/blob/master/main.py
-    https://github.com/carlosgeos/uniprocessor-scheduler/blob/master/src/simulation.py
-    https://github.com/ksameersrk/rt-scheduler/blob/master/analysis/plot_graph.py
-    https://github.com/guilyx/gantt-trampoline/blob/master/lib/GanttPlot.py
-
-    TODO: export figure with the plot
-    https://plotly.com/python/static-image-export/
 
     Args:
         sched: schedule list for each task
@@ -260,11 +241,28 @@ def plot_gantt(sched):
 
     Returns:
         None
+
+    TODO: add a slider
+    https://plotly.com/python/animations/
+    https://plotly.com/python/sliders/
+
+    TODO: provide an alternative plotting option with matplotlib
+    https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/broken_barh.html
+
+    TODO: other alternative plots
+    https://github.com/ehsan-elwan/RM-Task-Scheduling/blob/master/Plotter.py
+    https://github.com/johnharakas/scheduling-des/blob/sim-plotting/Qt_Canvas.py
+    https://github.com/esalehi1996/Realtime_Scheduling_python/blob/master/main.py
+    https://github.com/carlosgeos/uniprocessor-scheduler/blob/master/src/simulation.py
+    https://github.com/ksameersrk/rt-scheduler/blob/master/analysis/plot_graph.py
+    https://github.com/guilyx/gantt-trampoline/blob/master/lib/GanttPlot.py
+
+    TODO: export figure with the plot
+    https://plotly.com/python/static-image-export/        
     """
 
     # check plotly version
     import plotly as pl
-    #print (pl.__version__)
     if versiontuple(pl.__version__) < versiontuple("4.9.0"):
         print ("ERROR: the scheduling plotting function requires plotly 4.9.0 or newer. Found", pl.__version__)
         return False
@@ -274,6 +272,8 @@ def plot_gantt(sched):
         print("Aborting execution of scheduling plotting due to invalid input file.")
         sys.exit(1)
 
+    # get the max value of x of the schedule to be used in the plot
+    max_x = 0
     # create the data format required by pandas DataFrame
     list_tasks = []
     for task in sched['sched']:
@@ -282,9 +282,9 @@ def plot_gantt(sched):
             task_color = task['color']
         else:
             task_color = 'blue' # the default color
-        
         for job in task['jobs']:
             list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), Finish=convert_to_datetime(job[1]), Color = task_color))
+            max_x = max(max_x,max(job[0],job[1]))
 
     # creating the pandas DataFrame requred by plotly
     df = pd.DataFrame(list_tasks)
@@ -299,8 +299,8 @@ def plot_gantt(sched):
     fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
 
     # this part converts dates into ticks
-    num_tick_labels = np.linspace(start = 0, stop = 10, num = 11, dtype = int)
-    date_ticks = [convert_to_datetime(x) for x in num_tick_labels]
+    num_tick_labels = np.linspace(start = 0, stop = max_x, num = max_x+1, dtype = int)
+    date_ticks = [convert_to_datetime(int(x)) for x in num_tick_labels]
     fig.layout.xaxis.update({
             'tickvals' : date_ticks,
             'ticktext' : num_tick_labels

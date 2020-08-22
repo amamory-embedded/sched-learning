@@ -51,12 +51,14 @@ else:
     print ("ERROR: unsupported scheduling algorithm", args.sched)
     sys.exit(1)
 
-# loading and parsing the YAML file
-with open('examples/sched2.yaml') as f:
-    sched = yaml.load(f, Loader=yaml.FullLoader)
-
 print ('PRINTING THE GENERATED SCHEDULING FILE:')
 pp.pprint(sched)
+
+# loading and parsing the YAML file
+#with open('examples/sched7.yaml') as f:
+#    sched = yaml.load(f, Loader=yaml.FullLoader)
+with open('data.yaml', 'w') as outfile:
+    yaml.dump(sched, outfile, default_flow_style=False)
 
 plot_gantt(sched)
 

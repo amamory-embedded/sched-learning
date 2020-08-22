@@ -1,0 +1,22 @@
+# example from http://user.it.uu.se/~yi/courses/rts/dvp-rts-08/notes/Scheduling-periodic.pdf
+# pg 5
+algo: 
+  - edf
+  - rms
+tasks:
+  - name: task1
+    exec_time: 1
+    deadline: 3
+    period: 3
+  - name: task2
+    exec_time: 1
+    deadline: 5
+    period: 5
+  - name: task3
+    exec_time: 1
+    deadline: 6
+    period: 6
+  - name: task4
+    exec_time: 2
+    deadline: 10
+    period: 10
