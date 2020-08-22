@@ -24,7 +24,7 @@ def rms_is_schedulable(tasks):
         return False
        
 
-def rms(task_list):
+def rms(task_list, sim_time=0):
     """Simulates the Rate Monotonic (RM) scheduling algorithm
 
     Args:
@@ -44,28 +44,28 @@ def rms(task_list):
     #    print("Aborting execution of RMS algorithm since this task set is not schedulable for RMS.")
     #    sys.exit(1)
 
-    # Returns the LCM (Lowest Common Multiple) of a list of integers
-    # this will determine the max simulation time
-    list_period=[]
-    for task in task_list:
-        list_period.append(task['period'])
-    task_lcm = np.lcm.reduce(list_period)
-    print ("The simulation time is:", task_lcm)
+    # if the simulation time is not specified by the user, then use the LCM of the task periods
+    if sim_time == 0:
+        # Returns the LCM (Lowest Common Multiple) of a list of integers
+        # this will determine the max simulation time
+        list_period=[]
+        for task in task_list:
+            list_period.append(task['period'])
+        sim_time = np.lcm.reduce(list_period)
+        
+    print ("The simulation time is:", sim_time)
 
+    # assuming all the tasks start at time zero, initialize the OS's ready_list
     ready_list = []
     for task in task_list:
-        #['name'],task['period'], task['deadline']
-        # (computation time, task description)
         ready_list.append([task['exec_time'], task])
-
-    print (ready_list)
+    #print (ready_list)
 
     schedule = []
-    for i in range(1,20):
+    for i in range(1,sim_time+1):
         # check if there are tasks to be included in the ready_list
         for task in task_list:
             # check if it is time to start another job
-            #print (i,task['period'])
             if ((i % task['period']) == 0):
                 ready_list.append([task['exec_time'], task])
         # shortest period first
@@ -84,11 +84,20 @@ def rms(task_list):
             # check if the job finished, then delete the top of the list
             if job[0] == 0:
                del ready_list[0]
-        #print (ready_list)
 
+    #print (schedule)
 
-    print (schedule)
+    # artificially including a new task called idle to track the CPU idle time
+    task_list.append(
+        dict(
+            name= 'idle',
+            exec_time= 1,
+            deadline= 1,
+            period= 1,
+        )
+    )
 
+    # creating the data structrute for scheduling
     sched = {}
     sched['title'] = 'Some title'
     sched['sched'] = []
@@ -97,26 +106,32 @@ def rms(task_list):
         sched_task = {}
         sched_task['name'] = task['name']
         sched_task['jobs'] = []
+        if task['name'] == 'idle':
+            sched_task['color'] = 'green'
+        else:
+            sched_task['color'] = 'blue'
         print ("#############", task['name'], "#############")
         print (sched_task)
         #search for this task in the schedule
-        for idx, ready_task in enumerate(schedule,start=1):
-            if task['name'] == ready_task:
+        idx = 0
+        while idx < len(schedule):
+            if task['name'] == schedule[idx]:
                 start_time = idx
                 if idx != len(schedule):
                     for idx2, ready_task2 in enumerate(schedule[idx:]):
                         end_time = idx+idx2
                         if task['name'] != ready_task2:
+                            #skip the start time to the next perior
+                            idx = end_time
                             break
                 else:
                     end_time = idx
-                end_time +=1
-                print (task['name'], "[",start_time,end_time,"]")
+                #end_time +=1
+                #print (task['name'], "[",start_time,end_time,"]")
                 sched_task['jobs'].append([start_time,end_time])
+            idx +=1
         print (sched_task)
         sched['sched'].append(sched_task)
         print ("##########################")
-      #{'jobs': [], 'name': 'task1'}
-    #print ("SCHED")
-    #print (sched)
+
     return sched

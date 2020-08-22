@@ -283,7 +283,11 @@ def plot_gantt(sched):
         else:
             task_color = 'blue' # the default color
         for job in task['jobs']:
-            list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), Finish=convert_to_datetime(job[1]), Color = task_color))
+            list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), 
+                Finish=convert_to_datetime(job[1]), Color = task_color, 
+                # used only by the hover feature
+                Start_tick = job[0], Finish_tick = job[1], Duration = job[1]-job[0]
+                ))
             max_x = max(max_x,max(job[0],job[1]))
 
     # creating the pandas DataFrame requred by plotly
@@ -295,9 +299,17 @@ def plot_gantt(sched):
     else:
         chart_title = ''
 
-    fig = px.timeline(df, title = chart_title, x_start="Start", x_end="Finish", color = "Color", y="Task")
+    fig = px.timeline(df, title = chart_title, x_start="Start", x_end="Finish", color = "Color", y="Task",
+        # info used only for the hover feature
+        custom_data = ['Start_tick','Finish_tick','Duration'])
+    
     fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
 
+    # format the data appearing in the mouse hover feature
+    fig.update_traces(
+        hovertemplate = "Start:%{customdata[0]}<br>Start: %{customdata[1]}<br>Duration: %{customdata[2]}"
+    )
+    
     # this part converts dates into ticks
     num_tick_labels = np.linspace(start = 0, stop = max_x, num = max_x+1, dtype = int)
     date_ticks = [convert_to_datetime(int(x)) for x in num_tick_labels]

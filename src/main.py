@@ -26,11 +26,7 @@ print ('PRINTING THE INPUT CONFIGURATION FILE:')
 pp = pprint.PrettyPrinter(indent=4)
 pp.pprint(docs)
 
-#pp.pprint(docs['algo'][0])
-#pp.pprint(docs['tasks'][0]['name'])
-
 # check wheter this yaml file support the selected algorithm
-
 valid_algo = False
 for algo in docs['algo']:
     if algo == args.sched:
@@ -40,7 +36,6 @@ for algo in docs['algo']:
 if not valid_algo:
     print ("ERROR: the selected file does not support the selected scheduling algorithm",args.sched)
     sys.exit(1)
-
 
 # selecting and running the scheduling algorithm
 if args.sched == 'rms':
