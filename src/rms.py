@@ -24,7 +24,7 @@ def rms_is_schedulable(tasks):
         return False
        
 
-def rms(task_list, sim_time=0):
+def rms(task_list, sim_time=0, verbose=False):
     """Simulates the Rate Monotonic (RM) scheduling algorithm
 
     Args:
@@ -101,7 +101,6 @@ def rms(task_list, sim_time=0):
     sched = {}
     sched['title'] = 'Some title'
     sched['sched'] = []
-    print (sched)
     for task in task_list:
         sched_task = {}
         sched_task['name'] = task['name']
@@ -110,8 +109,9 @@ def rms(task_list, sim_time=0):
             sched_task['color'] = 'green'
         else:
             sched_task['color'] = 'blue'
-        print ("#############", task['name'], "#############")
-        print (sched_task)
+        if verbose:
+            print ("#############", task['name'], "#############")
+            print (sched_task)
         #search for this task in the schedule
         idx = 0
         while idx < len(schedule):
@@ -130,8 +130,9 @@ def rms(task_list, sim_time=0):
                 #print (task['name'], "[",start_time,end_time,"]")
                 sched_task['jobs'].append([start_time,end_time])
             idx +=1
-        print (sched_task)
         sched['sched'].append(sched_task)
-        print ("##########################")
+        if verbose:
+            print (sched_task)
+            print ("##########################")
 
     return sched

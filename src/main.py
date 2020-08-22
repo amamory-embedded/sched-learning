@@ -7,9 +7,16 @@ from rms import rms
 from common import plot_gantt
 
 # parsing arguments
-
 parser = argparse.ArgumentParser()
-parser.add_argument('file', type=argparse.FileType('r'))
+parser.add_argument('file', type=argparse.FileType('r'),
+                    help='input file describing the tasks to be scheduled'
+                    )
+parser.add_argument('--ofile', type=argparse.FileType('w'),
+                    help='output file with the resulting schedule. If not defined, it will not be saved in a file'
+                    )
+parser.add_argument('-s','--simtime', dest='sim_time', default=0, type=int,
+              help='The number of OS ticks to be simulated.')
+parser.add_argument('-v','--verbose', dest='verbose', action='store_true', default=False)
 parser.add_argument('--sched',
                     default='rms',
                     nargs='?',
@@ -22,9 +29,10 @@ args = parser.parse_args()
 with open(args.file.name) as f:
     docs = yaml.load(f, Loader=yaml.FullLoader)
 
-print ('PRINTING THE INPUT CONFIGURATION FILE:')
 pp = pprint.PrettyPrinter(indent=4)
-pp.pprint(docs)
+if args.verbose:
+    print ('PRINTING THE INPUT CONFIGURATION FILE:')
+    pp.pprint(docs)
 
 # check wheter this yaml file support the selected algorithm
 valid_algo = False
@@ -39,22 +47,21 @@ if not valid_algo:
 
 # selecting and running the scheduling algorithm
 if args.sched == 'rms':
-    sched = rms(docs['tasks'])
+    sched = rms(docs['tasks'], sim_time=args.sim_time, verbose=args.verbose)
 elif args.sched == 'edf':
-    sched = edf(docs['tasks'])
+    sched = edf(docs['tasks'], sim_time=args.sim_time, verbose=args.verbose)
 else:
     print ("ERROR: unsupported scheduling algorithm", args.sched)
     sys.exit(1)
 
-print ('PRINTING THE GENERATED SCHEDULING FILE:')
-pp.pprint(sched)
+if args.verbose:
+    print ('PRINTING THE GENERATED SCHEDULING FILE:')
+    pp.pprint(sched)
 
-# loading and parsing the YAML file
-#with open('examples/sched7.yaml') as f:
-#    sched = yaml.load(f, Loader=yaml.FullLoader)
-with open('data.yaml', 'w') as outfile:
-    yaml.dump(sched, outfile, default_flow_style=False)
+if args.ofile is not None:
+    with open(args.ofile.name, 'w') as outfile:
+        yaml.dump(sched, outfile, default_flow_style=False)
 
-plot_gantt(sched)
+plot_gantt(sched, verbose=args.verbose)
 
 

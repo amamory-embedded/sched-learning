@@ -206,7 +206,7 @@ def convert_to_datetime(x):
 
 
 
-def plot_gantt(sched):
+def plot_gantt(sched, verbose = False):
     """Use the plotly lib to plot the gantt chart
     based on: https://stackoverflow.com/questions/57686684/using-numerical-values-in-plotly-for-creating-gantt-charts
     https://plotly.com/python/gantt/
