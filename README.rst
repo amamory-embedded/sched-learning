@@ -10,8 +10,8 @@ Welcome to YATSS's documentation!
 YATSS (Yet Another Task Scheduling Simulator).
 Supported task scheduling algorithms: 
 
-* Rate Monotonic Scheduling (RMS) algorithm 
-* Earliest Deadline First (EDF) algorithm
+* `Rate Monotonic Scheduling (RMS) algorithm <https://en.wikipedia.org/wiki/Rate-monotonic_scheduling>`_;
+* `Earliest Deadline First (EDF) algorithm <https://en.wikipedia.org/wiki/Earliest_deadline_first_scheduling>`_.
 
 Creating the conda environment
 ==============================
@@ -28,7 +28,7 @@ Creating the conda environment
     pip install sphinx-autodoc
 
 Installing and running
-===================
+======================
 
 ::
 
