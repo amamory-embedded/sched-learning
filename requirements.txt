@@ -3,4 +3,4 @@ pyyaml
 plotly
 sphinx
 sphinx-rtd-theme
-sphinx-autodoc
+sphinx-me
