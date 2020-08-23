@@ -128,8 +128,3 @@ Indices and tables
 
   yatss/modules.rst
    
-
-.. |Docs Badge| image:: https://readthedocs.org/projects/yatss/badge/?version=latest
-
-:target: https://yatss.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status

@@ -23,3 +23,8 @@ Main features
 * Easy to use input/ouput file formats based on YAML;
 * Gantt-like schedule plot using plotly;
 * Documentation.
+
+.. |Docs Badge| image:: https://readthedocs.org/projects/yatss/badge/?version=latest
+
+:target: https://yatss.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status
