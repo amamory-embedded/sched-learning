@@ -24,10 +24,10 @@ def versiontuple(v):
 
 
 def check_rms_edf(task_list):
-    """Parse the YAML for the required field for RMS and EDF algorithms
+    """
+    Parse the YAML for the required field for RMS and EDF algorithms
 
-    Args:
-        task_list: list of task descriptors
+    :param task_list: list of task descriptors
 
     Supported task_list in Python format:
     {   'algo': ['edf', 'rms'],

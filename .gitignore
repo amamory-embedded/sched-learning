@@ -74,6 +74,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/source/yastss/
 _build
 _static
 _templates

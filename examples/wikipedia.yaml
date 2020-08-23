@@ -1,0 +1,17 @@
+# example from https://en.wikipedia.org/wiki/Rate-monotonic_scheduling
+algo: 
+  - edf
+  - rms
+tasks:
+  - name: p1
+    exec_time: 1
+    deadline: 8
+    period: 8
+  - name: p2
+    exec_time: 2
+    deadline: 5
+    period: 5
+  - name: p3
+    exec_time: 2
+    deadline: 10
+    period: 10
