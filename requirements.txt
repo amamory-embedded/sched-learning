@@ -1,0 +1,5 @@
+pandas
+pyyaml
+plotly
+sphinx
+sphinx-rtd-theme

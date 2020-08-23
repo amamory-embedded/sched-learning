@@ -8,7 +8,7 @@ __pycache__/
 
 #Visual Code studio
 .vscode/**
-
+*-workspace
 
 # Distribution / packaging
 .Python
@@ -74,7 +74,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
-docs/source/yastss/
+docs/source/yatss/
 _build
 _static
 _templates

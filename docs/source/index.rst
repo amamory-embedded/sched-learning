@@ -1,145 +1,121 @@
 
-|Docs Badge| 
+.. include:: ../../README.rst
 
-==================================
-Welcome to YATSSS's documentation!
-==================================
+.. toctree::
+   :caption: Contents
+   :maxdepth: 3
 
-YATSS (Yet Another Task Scheduling Simulator).
-Supported task scheduling algorithms: 
-
-* `Rate Monotonic Scheduling (RMS) algorithm <https://en.wikipedia.org/wiki/Rate-monotonic_scheduling>`_;
-* `Earliest Deadline First (EDF) algorithm <https://en.wikipedia.org/wiki/Earliest_deadline_first_scheduling>`_.
-
-Creating the conda environment
-==============================
-
-::
-
-    conda create --name yatss python=3.6
-    conda activate yatss
-    conda install pandas
-    conda install pyyaml
-    conda install plotly
-    conda install sphinx
-    pip install sphinx-rtd-theme
-    pip install sphinx-autodoc
-
-Installing and running
-======================
-
-::
-
-    git clone 
-    cd shed-learning
-    python src/main.py example/testbench2.yaml
-
-
-
-Running an example
-==================
+Installing
+==========
 
 .. code-block:: bash
 
-   >$ python src/main.py examples/wikipedia.yaml --ofile sched.yml
+    conda create --name yatss python=3.6
+    conda activate yatss
+    git clone https://github.com/amamory-embedded/sched-learning.git
+    cd shed-learning
+    pip install -r requirements.txt
+
+
+Examples and Usage
+==================
+
+Enter the following command to run an example:
+
+.. code-block:: bash
+
+   >$ python src/main.py examples/wikipedia.yaml
    checking the task list ... passed !
    The simulation time is: 40
    checking the scheduling list ... passed !
 
-Task description YAML file
-==========================
+These are the supported arguments:
 
-The following example from wikipedia describes a taskset of 3 tasks. 
+::
+
+    $ python src/main.py -h
+    usage: main.py [-h] [--ofile OFILE] [-s SIM_TIME] [-v] [--sched [{rms,edf}]] file
+
+    positional arguments:
+      file                  input file describing the tasks to be scheduled
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --ofile OFILE         output file with the resulting schedule. If not
+                            defined, it will not be saved in a file
+      -s SIM_TIME, --simtime SIM_TIME
+                            The number of OS ticks to be simulated.
+      -v, --verbose
+      --sched [{rms,edf}]   list of supported task scheduling algoritms (default: rms)
+
+It is also possible to just visualize an existing scheduling:
+
+.. code-block:: bash
+
+   >$ python src/show_sched.py examples/wikipedia-sched.yaml
+   checking the task list ... passed !
+
+It will open in the browser a image like this one.
+
+.. figure:: ./wikipedia.png
+
+
+File Formats
+============
+
+YATSS has an input file format to describe the taskset to be scheduled
+and an output file format for the resulting schedule. 
+Both files are based on YAML format.
+
+Input File: Task description YAML file
+***************************************
+
+The following example from `wikipedia <https://en.wikipedia.org/wiki/Rate-monotonic_scheduling>`_
+describes a taskset of 3 tasks, as presented in the following table. 
+
+=======  ==============  ======
+Process  Execution Time  Period
+=======  ==============  ======
+P1 	      1 	            8
+P2 	      2 	            5
+P3 	      2 	            10 
+=======  ==============  ======
+
 
 The taskset attributes are: 
 
- * Mandatory: algo, tasks
+ * Mandatory: ``algo``, ``tasks``;
  * Optional: None
 
 The task attributes are: 
 
- * Mandatory: name, exec_time, deadline, period;
+ * Mandatory: ``name``, ``exec_time``, ``deadline``, ``period``;
  * Optional: color.
 
-.. code-block:: yaml
-   :linenos:
-
-      algo: 
-      - edf
-      - rms
-      tasks:
-        - name: p1
-          exec_time: 1
-          deadline: 8
-          period: 8
-        - name: p2
-          exec_time: 2
-          deadline: 5
-          period: 5
-        - name: p3
-          exec_time: 2
-          deadline: 10
-          period: 10
+.. literalinclude:: wikipedia.yaml
+  :language: yaml
+  :linenos:
 
 
-Schedule YAML file
-==================
+
+Output File: Schedule YAML file
+*******************************
 
 The following example describes a taskset of 3 tasks. 
 
-The taskset attributes are: 
+The schedule attributes are: 
 
- * Mandatory: algo, tasks
+ * Mandatory: ``algo``, ``sched``;
  * Optional: None
 
 The task attributes are: 
 
- * Mandatory: name, exec_time, deadline, period;
- * Optional: color.
+ * Mandatory: ``name``, ``jobs``. Where ``jobs`` is a list of tuples of start and finish job intervals;
+ * Optional: ``color``.
 
-.. code-block:: yaml
-   :linenos:
-
-   sched:
-   - color: blue
-     jobs:
-     - [ 2, 3]
-     - [ 7, 8]
-     - [16,17]
-     - [23,24]
-     - [31,32]
-     name: p1
-   - color: blue
-     jobs:
-     - [ 0, 2]
-     - [ 4, 6]
-     - [ 9,11]
-     - [14,16]
-     - [19,21]
-     - [24,26]
-     - [29,31]
-     - [34,36]
-     name: p2
-   - color: blue
-     jobs:
-     - [ 3, 4]
-     - [ 6, 7]
-     - [11,13]
-     - [21,23]
-     - [32,34]
-     name: p3
-   - color: green
-     jobs:
-     - [ 8, 9]
-     - [13,14]
-     - [17,19]
-     - [26,29]
-     - [36,39]
-     name: idle
-   title: Some title
-
-.. figure:: ../wikipedia.png
-
+.. literalinclude:: wikipedia-sched.yaml
+  :language: yaml
+  :linenos:
 
 
 Indices and tables
@@ -147,10 +123,9 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
 
 
-   yatss/modules.rst
+  yatss/modules.rst
    
 
 .. |Docs Badge| image:: https://readthedocs.org/projects/yatss/badge/?version=latest
