@@ -4,6 +4,7 @@
 .. it is possible to use blockdiag with http://blockdiag.com/en/blockdiag/sphinxcontrib.html sphinx extension
 .. RST primer https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 .. extension to call apidoc automatically https://github.com/sphinx-contrib/apidoc
+.. https://pythonhosted.org/an_example_pypi_project/sphinx.html#full-code-example
 
 Welcome to YATSSS's documentation!
 ==================================
