@@ -138,7 +138,7 @@ The task attributes are:
      name: idle
    title: Some title
 
-.. figure:: /wikipedia.png
+.. figure:: ../wikipedia.png
 
 
 
