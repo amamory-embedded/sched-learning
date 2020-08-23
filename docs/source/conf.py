@@ -35,6 +35,8 @@ extensions = [
     "sphinx_rtd_theme",
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
+    'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.autosummary',
     'autoapi.extension'
 ]
 

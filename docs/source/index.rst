@@ -1,17 +1,6 @@
 
 .. include:: ../../README.rst
 
-.. toctree::
-   :caption: Contents
-   :maxdepth: 3
-
-.. toctree::
-   autoapi/common/index
-   autoapi/rms/index
-   autoapi/edf/index
-   autoapi/run_sched/index
-   autoapi/show_sched/index
-
 Installing
 ==========
 
@@ -126,9 +115,14 @@ The task attributes are:
   :linenos:
 
 
-Indices and tables
-==================
+API Doc
+=======
 
 * :ref:`genindex`
 * :ref:`modindex`
+
+.. toctree::
+   :hidden:
+   :caption: Contents
+   :maxdepth: 3
 
