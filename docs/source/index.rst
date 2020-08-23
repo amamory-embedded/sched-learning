@@ -108,6 +108,7 @@ The schedule attributes are:
  * Mandatory: ``algo``, ``sched``;
  * Optional: None
 
+
 The task attributes are: 
 
  * Mandatory: ``name``, ``jobs``. Where ``jobs`` is a list of tuples of start and finish job intervals;
