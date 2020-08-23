@@ -9,7 +9,7 @@
    autoapi/common/index
    autoapi/rms/index
    autoapi/edf/index
-   autoapi/main/index
+   autoapi/run_sched/index
    autoapi/show_sched/index
 
 Installing
@@ -31,7 +31,7 @@ Enter the following command to run an example:
 
 .. code-block:: bash
 
-   >$ python src/main.py examples/wikipedia.yaml
+   >$ python src/run_sched.py examples/wikipedia.yaml
    checking the task list ... passed !
    The simulation time is: 40
    checking the scheduling list ... passed !
@@ -40,8 +40,8 @@ These are the supported arguments:
 
 ::
 
-    $ python src/main.py -h
-    usage: main.py [-h] [--ofile OFILE] [-s SIM_TIME] [-v] [--sched [{rms,edf}]] file
+    $ python src/run_sched.py -h
+    usage: run_sched.py [-h] [--ofile OFILE] [-s SIM_TIME] [-v] [--sched [{rms,edf}]] file
 
     positional arguments:
       file                  input file describing the tasks to be scheduled
