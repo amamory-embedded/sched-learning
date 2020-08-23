@@ -3,6 +3,7 @@
 .. it is possible to use Markdown with https://github.com/crossnox/m2r2 sphinx extension
 .. it is possible to use blockdiag with http://blockdiag.com/en/blockdiag/sphinxcontrib.html sphinx extension
 .. RST primer https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
+.. extension to call apidoc automatically https://github.com/sphinx-contrib/apidoc
 
 Welcome to YATSSS's documentation!
 ==================================
@@ -24,6 +25,5 @@ Main features
 * Documentation.
 
 .. |Docs Badge| image:: https://readthedocs.org/projects/yatss/badge/?version=latest
-
-:target: https://yatss.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+    :target: https://yatss.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
