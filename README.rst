@@ -4,7 +4,6 @@
 .. it is possible to use blockdiag with http://blockdiag.com/en/blockdiag/sphinxcontrib.html sphinx extension
 .. RST primer https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 
-==================================
 Welcome to YATSSS's documentation!
 ==================================
 
