@@ -4,34 +4,42 @@ import sys
 
 
 def rms_is_schedulable(tasks):
-    """Check whether the specified task set is schedulable under RMS algorithm
+    """Check the task set schedulability for RMS.
+    
+    Check whether the specified task set is schedulable under RMS algorithm.
 
-    Args:
-        task_list: list of task descriptors
+    :param tasks: list of task descriptors.
 
-    Returns:
-        bool: The return value. True for success, False otherwise.
+    :return: The return value. True for success, False otherwise.
+    :rtype: bool.
     """
 
     totalUse = sum(task['exec_time']/float(task['period']) for task in tasks)
     n = len(tasks)
     if(n == 0 ): return
     #check scallability based off of total use and number os tasks
-    print ("RMS schedudability",totalUse, " <= ", n*(2**(1/n)-1))
-    if (totalUse <= n*(2**(1/n)-1)):
-        return True
-    else:
+    print ("RMS schedudability:",totalUse, " <= ", n*(2**(1/n)-1))
+    if (totalUse > 1.0):
+        print("ERROR: total CPU usage > 100%.")
         return False
+    if (totalUse <= n*(2**(1/n)-1)):
+        print("The tasks are provably schedulable.")
+    else:
+        print("The tasks might be scheludable, with no guarantees.")
+    return True
        
 
 def rms(task_list, sim_time=0, verbose=False):
-    """Simulates the Rate Monotonic (RM) scheduling algorithm
+    """Simulates the Rate Monotonic (RM) scheduling algorithm.
 
-    Args:
-        task_list: list of task descriptors
+    :param  task_list: List of task descriptors.
+    :param sim_time: Time for simulation. If none is defined, then LCM (Lowest Common Multiple) of periods is used.
+    :type  sim_time: int
+    :param verbose:
+    :type  verbose: bool
 
-    Returns:
-        sched: schedule list for each task
+    :return: sched 
+    :rtype: schedule list for each task (List of dictionaries).
     """
 
     # check the input syntax
@@ -40,9 +48,9 @@ def rms(task_list, sim_time=0, verbose=False):
         sys.exit(1)
     
     # check schedulability of the task set
-    #if not rms_is_schedulable(task_list):
-    #    print("Aborting execution of RMS algorithm since this task set is not schedulable for RMS.")
-    #    sys.exit(1)
+    if not rms_is_schedulable(task_list):
+        print("Aborting execution of RMS algorithm since this task set is not schedulable for RMS.")
+        sys.exit(1)
 
     # if the simulation time is not specified by the user, then use the LCM of the task periods
     if sim_time == 0:
@@ -85,7 +93,8 @@ def rms(task_list, sim_time=0, verbose=False):
             if job[0] == 0:
                del ready_list[0]
 
-    #print (schedule)
+    if verbose:
+        print (schedule)
 
     # artificially including a new task called idle to track the CPU idle time
     task_list.append(

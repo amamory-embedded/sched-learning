@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'YATSSS'
+project = 'YATSS'
 copyright = '2020, Alexandre Amory'
 author = 'Alexandre Amory'
 
@@ -34,7 +34,8 @@ extensions = [
     'sphinx.ext.autodoc',
     "sphinx_rtd_theme",
     'sphinx.ext.viewcode',
-
+    'sphinx.ext.todo',
+    'autoapi.extension'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -61,3 +62,11 @@ html_static_path = ['_static']
 
 master_doc = 'index'
 source_suffix = ['.rst']
+
+# Document Python Code
+autoapi_type = 'python'
+autoapi_dirs = ['../../src']
+autoapi_add_toctree_entry = False
+
+
+todo_include_todos = True

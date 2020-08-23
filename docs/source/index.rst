@@ -5,6 +5,13 @@
    :caption: Contents
    :maxdepth: 3
 
+.. toctree::
+   autoapi/common/index
+   autoapi/rms/index
+   autoapi/edf/index
+   autoapi/main/index
+   autoapi/show_sched/index
+
 Installing
 ==========
 
@@ -125,6 +132,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 
-
-  yatss/modules.rst
-   

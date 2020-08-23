@@ -8,64 +8,34 @@ import numpy as np
 
 
 def versiontuple(v):
-    """Convert a string of package version in a tuple for future comparison
+    """Convert a string of package version in a tuple for future comparison.
 
-    Args:
-        version : string version, e.g "2.3.1"
+    :param v: string version, e.g "2.3.1".
+    :type  v: str
+    :return: The return tuple, e.g. (2,3,1).
+    :rtype:  tuple 
 
-    Usage: 
-        >> versiontuple("2.3.1") > versiontuple("10.1.1")
-        False
+    :Example: 
 
-    Returns:
-        bool: The return tuple, e.g. (2,3,1)
+        >>> versiontuple("2.3.1") > versiontuple("10.1.1")
+        >>> False
     """    
     return tuple(map(int, (v.split("."))))
 
 
 def check_rms_edf(task_list):
+    """Parse the YAML for the required field for RMS and EDF algorithms.
+
+    .. literalinclude:: ../../wikipedia.yaml
+        :language: yaml
+        :linenos:
+
+    :param task_list: List of task descriptors, as in the example above.
+    :type  task_list: List of dictionaries.
+    :return: True for success, False otherwise.
+    :rtype: bool
     """
-    Parse the YAML for the required field for RMS and EDF algorithms
 
-    :param task_list: list of task descriptors
-
-    Supported task_list in Python format:
-    {   'algo': ['edf', 'rms'],
-        'tasks': [   {   'deadline': 135,
-                        'exec_time': 45,
-                        'name': 'task1',
-                        'period': 135},
-                    {   'deadline': 150,
-                        'exec_time': 50,
-                        'name': 'task2',
-                        'period': 150},
-                    {   'deadline': 360,
-                        'exec_time': 80,
-                        'name': 'task3',
-                        'period': 360}]}
-
-    Supported task_list in YAML format:
-    algo: 
-    - edf
-    - rms
-    tasks:
-    - name: task1
-        exec_time: 45
-        deadline: 135
-        period: 135
-    - name: task2
-        exec_time: 50
-        deadline: 150
-        period: 150
-    - name: task3
-        exec_time: 80
-        deadline: 360
-        period: 360    
-
-    Returns:
-        bool: The return value. True for success, False otherwise.
-    """
-    
     ##############
     # validate the input format first. some fields are expected for rms
     ##############
@@ -121,13 +91,16 @@ def check_rms_edf(task_list):
 
 
 def check_sched(sched):
-    """Parse the YAML for the resulting schedule of a scheduling algorithm
+    """Parse the YAML for the resulting schedule of a scheduling algorithm.
 
-    Args:
-        sche: list of sched descriptors
+    .. literalinclude:: ../../wikipedia-sched.yaml
+        :language: yaml
+        :linenos:
 
-    Returns:
-        bool: The return value. True for success, False otherwise.
+    :param task_list: List of sched descriptors, as in the example above.
+    :type  task_list: List of dictionaries.
+    :return: True for success, False otherwise.
+    :rtype: bool
     """
     
     ##############
@@ -149,8 +122,8 @@ def check_sched(sched):
             print ("\nERROR: field 'jobs' not found in task")
             return False
         if len(task['jobs']) <= 0:
-            print ("\nERROR: a task must have at least one job. Got", len(task['jobs']))
-            return False
+            print ("\WARNING: task %s has no job. Got" % task['name'], len(task['jobs']))
+            #return False
         for job in task['jobs']:
             if type(job[0]) is not int or type(job[1]) is not int:
                 print ("\nERROR: jobs must be int initial and final times. Got", type(job[0]), type(job[1]))
@@ -171,33 +144,17 @@ def check_sched(sched):
 
 
 
-def lcm (int_list):
-    """Returns the LCM (Lowest Common Multiple) of a list of integers
-    source: https://stackoverflow.com/questions/37237954/calculate-the-lcm-of-a-list-of-given-numbers-in-python
-
-    Args:
-        int_list: list of positive integers
-
-    Returns:
-        int: the LCM
-    """
-    if len(int_list) > 0:
-        lcm = int_list[0]
-        for i in int_list[1:]:
-            lcm = lcm*i/gcd(lcm, i)
-        return lcm
-    else:
-        return -1
-
-
 def convert_to_datetime(x):
-    """Auxiliar function used to plot the gantt chart. It converts a natural number to date, where 0 corresponds to datetime(1970, 1, 1)
+    """Converts a natural number to date. 
+    
+    It converts a natural number to date, where 0 corresponds to 
+    datetime(1970, 1, 1) (assuming, y/m/d). Value 1 corresponds to 
+    datetime(1970, 1, 2).
 
-    Args:
-        x: interger value
+    :param x: natural value
+    :type  x: int
 
-    Returns:
-        datetime
+    :rtype: datetime
     """
 
     #data_conv = datetime.datetime.fromtimestamp(31536000+x*24*3600).strftime("%Y-%m-%d")
@@ -207,58 +164,45 @@ def convert_to_datetime(x):
 
 
 def plot_gantt(sched, verbose = False):
-    """Use the plotly lib to plot the gantt chart
-    based on: https://stackoverflow.com/questions/57686684/using-numerical-values-in-plotly-for-creating-gantt-charts
-    https://plotly.com/python/gantt/
-    https://plotly.com/python-api-reference/generated/plotly.express.timeline.html
-    https://plotly.com/python-api-reference/generated/plotly.graph_objects.html#plotly.graph_objects.Figure
+    """Use the plotly lib to plot the gantt chart.
 
-    Args:
-        sched: schedule list for each task
 
-        sched example in python format:
-        {   'sched': [   {'color': 'yellow', 'jobs': [[1, 3], [5, 7]], 'name': 'task1'},
-                        {'color': 'green', 'jobs': [[4, 6]], 'name': 'task2'},
-                        {'jobs': [[3, 4]], 'name': 'task3'}],
-            'title': 'scheduling with RMS'}
-        
-        sched example in YAML:
-            title: "scheduling with RMS"
-            sched:
-                - name: task1
-                  color: 'yellow'
-                  jobs: 
-                    - [1, 3]
-                    - [5, 7]
-                - name: task2
-                  color: 'green'
-                  jobs: 
-                    - [4,6]
-                - name: task3
-                    jobs: 
-                    - [3,4]
-        The fields 'title' and 'color' are optional.
+    .. literalinclude:: ../../wikipedia-sched.yaml
+        :language: yaml
+        :linenos:
 
-    Returns:
-        None
+    :param  sched: The shedule YAML file, as in the example above.
+    :type   sched: List of dictionaries.
+    :param  verbose: enable/disable verbose mode
+    :type   verbose: bool
+    :return: None
 
-    TODO: add a slider
-    https://plotly.com/python/animations/
-    https://plotly.com/python/sliders/
+    .. todo:: add a slider
 
-    TODO: provide an alternative plotting option with matplotlib
-    https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/broken_barh.html
+        https://plotly.com/python/animations/
 
-    TODO: other alternative plots
-    https://github.com/ehsan-elwan/RM-Task-Scheduling/blob/master/Plotter.py
-    https://github.com/johnharakas/scheduling-des/blob/sim-plotting/Qt_Canvas.py
-    https://github.com/esalehi1996/Realtime_Scheduling_python/blob/master/main.py
-    https://github.com/carlosgeos/uniprocessor-scheduler/blob/master/src/simulation.py
-    https://github.com/ksameersrk/rt-scheduler/blob/master/analysis/plot_graph.py
-    https://github.com/guilyx/gantt-trampoline/blob/master/lib/GanttPlot.py
+        https://plotly.com/python/sliders/
 
-    TODO: export figure with the plot
-    https://plotly.com/python/static-image-export/        
+    .. todo:: provide an alternative plotting option with matplotlib
+
+        https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/broken_barh.html
+
+    .. todo:: other alternative plots
+
+        https://github.com/ehsan-elwan/RM-Task-Scheduling/blob/master/Plotter.py
+
+        https://github.com/johnharakas/scheduling-des/blob/sim-plotting/Qt_Canvas.py
+
+        https://github.com/esalehi1996/Realtime_Scheduling_python/blob/master/main.py
+
+        https://github.com/carlosgeos/uniprocessor-scheduler/blob/master/src/simulation.py
+
+        https://github.com/ksameersrk/rt-scheduler/blob/master/analysis/plot_graph.py
+
+        https://github.com/guilyx/gantt-trampoline/blob/master/lib/GanttPlot.py
+
+    .. todo:: export figure with the plot
+        https://plotly.com/python/static-image-export/        
     """
 
     # check plotly version
@@ -322,14 +266,27 @@ def plot_gantt(sched, verbose = False):
     fig.show()
 
 def sched_list_2_sched_dict(tasks,sched_list,verbose=False):
-    """Convert a scheduling in format of a list into a schedule in format of dictionary
+    """Schedule format conversion.
+    
+    Convert a scheduling in format of a list into a schedule in the format of list of dictionary.
 
-    Args:
-        tasks : list of tasks
-        sched_list : schedule list
+    .. literalinclude:: ../../wikipedia.yaml
+        :language: yaml
+        :linenos:
 
-    Returns:
-        sched_dict: The return tuple, e.g. (2,3,1)
+    :param tasks: List of tasks descriptors, as in the example above.
+    :param sched_list: List the execution order of the jobs, e.g. ["P1","P1","P1","idle","P3","P2","P3", ...].
+    :param verbose: Enable/disable the verbosity level.
+    :type tasks: List of dictionaries.
+    :type sched_list: List of str.
+    :type verbose: bool.
+
+    .. literalinclude:: ../../wikipedia-sched.yaml
+        :language: yaml
+        :linenos:
+
+    :return: List of schedule descriptors, as in the example above.
+    :rtype: List of dictionaries.
     """       
     # creating the data structrute for scheduling
     sched = {}
