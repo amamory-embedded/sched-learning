@@ -122,7 +122,7 @@ def check_sched(sched):
             print ("\nERROR: field 'jobs' not found in task")
             return False
         if len(task['jobs']) <= 0:
-            print ("\WARNING: task %s has no job. Got" % task['name'], len(task['jobs']))
+            print ("\nWARNING: task %s has no job. Got" % task['name'], len(task['jobs']))
             #return False
         for job in task['jobs']:
             if type(job[0]) is not int or type(job[1]) is not int:
@@ -226,13 +226,21 @@ def plot_gantt(sched, verbose = False):
             task_color = task['color']
         else:
             task_color = 'blue' # the default color
-        for job in task['jobs']:
-            list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), 
-                Finish=convert_to_datetime(job[1]), Color = task_color, 
-                # used only by the hover feature
-                Start_tick = job[0], Finish_tick = job[1], Duration = job[1]-job[0]
-                ))
-            max_x = max(max_x,max(job[0],job[1]))
+        if len(task['jobs']) == 0:
+            # place the task in the char even if it had no job executed
+            list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(0), 
+                    Finish=convert_to_datetime(0), Color = task_color, 
+                    # used only by the hover feature
+                    Start_tick = 0, Finish_tick = 0, Duration = 0
+                    ))
+        else:
+            for job in task['jobs']:
+                list_tasks.append(dict(Task=task['name'], Start=convert_to_datetime(job[0]), 
+                    Finish=convert_to_datetime(job[1]), Color = task_color, 
+                    # used only by the hover feature
+                    Start_tick = job[0], Finish_tick = job[1], Duration = job[1]-job[0]
+                    ))
+                max_x = max(max_x,max(job[0],job[1]))
 
     # creating the pandas DataFrame requred by plotly
     df = pd.DataFrame(list_tasks)

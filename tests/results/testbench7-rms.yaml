@@ -1,0 +1,73 @@
+sched:
+- color: blue
+  jobs:
+  - - 0
+    - 1
+  - - 2
+    - 3
+  - - 5
+    - 6
+  - - 8
+    - 9
+  - - 11
+    - 12
+  - - 14
+    - 15
+  - - 17
+    - 18
+  - - 20
+    - 21
+  - - 23
+    - 24
+  - - 26
+    - 27
+  - - 29
+    - 29
+  name: task1
+- color: blue
+  jobs:
+  - - 1
+    - 2
+  - - 4
+    - 5
+  - - 9
+    - 10
+  - - 15
+    - 16
+  - - 19
+    - 20
+  - - 24
+    - 25
+  name: task2
+- color: blue
+  jobs:
+  - - 3
+    - 4
+  - - 6
+    - 7
+  - - 12
+    - 13
+  - - 18
+    - 19
+  - - 25
+    - 26
+  name: task3
+- color: blue
+  jobs:
+  - - 7
+    - 8
+  - - 10
+    - 11
+  - - 13
+    - 14
+  - - 16
+    - 17
+  - - 21
+    - 23
+  name: task4
+- color: green
+  jobs:
+  - - 27
+    - 29
+  name: idle
+title: Some title

@@ -4,9 +4,10 @@ import pprint
 import sys
 # supported algorithms
 from rms import rms
+from edf import edf
 from common import plot_gantt
 
-def main(file_name):
+def main():
     """Executes a task scheduling for a givin algorithm. 
 
     Given an input file describing the task set, this function generates
@@ -40,7 +41,10 @@ def main(file_name):
 
     # loading and parsing the YAML file
     with open(args.file.name) as f:
-        docs = yaml.load(f, Loader=yaml.FullLoader)
+        try:
+            docs = yaml.safe_load(f)
+        except yaml.YAMLError as exc:
+            print(exc)
 
     pp = pprint.PrettyPrinter(indent=4)
     if args.verbose:

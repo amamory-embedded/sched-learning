@@ -20,7 +20,10 @@ def main(file_name):
 
     # loading and parsing the YAML file
     with open(file_name) as f:
-        docs = yaml.load(f, Loader=yaml.FullLoader)
+        try:
+            docs = yaml.safe_load(f)
+        except yaml.YAMLError as exc:
+            print(exc)
 
     if args.verbose:
         print ('PRINTING THE INPUT SCHEDULING FILE:')
@@ -37,4 +40,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    main()
+    main(args.file.name)

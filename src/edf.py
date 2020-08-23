@@ -11,7 +11,7 @@ def edf_is_schedulable(tasks):
     :rtype: bool.
     """
 
-    totalUse = sum(task['exec_time'] for task in tasks)
+    totalUse = sum((task['exec_time']/float(task['period']) for task in tasks))
     n = len(tasks)
     if(n == 0 ): return
     if(totalUse <= 1):
