@@ -6,7 +6,7 @@
 .. extension to call apidoc automatically https://github.com/sphinx-contrib/apidoc
 .. https://pythonhosted.org/an_example_pypi_project/sphinx.html#full-code-example
 
-Welcome to YATSSS's documentation!
+Welcome to YATSS's documentation!
 ==================================
 
 YATSS (Yet Another Task Scheduling Simulator) supports the 
