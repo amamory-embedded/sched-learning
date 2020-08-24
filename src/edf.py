@@ -1,4 +1,6 @@
-from common import check_rms_edf
+from common import check_rms_edf, sched_list_2_sched_dict
+import numpy as np
+import sys
 
 def edf_is_schedulable(tasks):
     """Check the task set schedulability for EDF.
@@ -35,3 +37,7 @@ def edf(task_list, sim_time=0, verbose=False):
     if not check_rms_edf(task_list):
         print("Aborting execution of EDF algorithm due to invalid input file.")
         sys.exit(1)
+
+    sched = {}
+
+    return sched

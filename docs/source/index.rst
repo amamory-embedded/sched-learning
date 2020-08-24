@@ -51,15 +51,25 @@ It is also possible to just visualize an existing scheduling:
    >$ python src/show_sched.py examples/wikipedia-sched.yaml
    checking the task list ... passed !
 
-It will open in the browser a image like this one.
+It will open in the browser an image like this one.
 
 .. figure:: ./wikipedia.png
 
+Graphical Support
+=================
+
+YATSS generated gantt-link schedules like this one.
+
+.. figure:: ./large-sched.png
+
+and it also has *hover* functionality, displaying the initial/final time and duration of a job.
+
+.. figure:: ./hover.png
 
 File Formats
 ============
 
-YATSS has an input file format to describe the taskset to be scheduled
+YATSS has an input file format to describe the task set to be scheduled
 and an output file format for the resulting schedule. 
 Both files are based on YAML format.
 
@@ -67,7 +77,7 @@ Input File: Task description YAML file
 ***************************************
 
 The following example from `wikipedia <https://en.wikipedia.org/wiki/Rate-monotonic_scheduling>`_
-describes a taskset of 3 tasks, as presented in the following table. 
+describes a task set of 3 tasks, as presented in the following table. 
 
 =======  ==============  ======
 Process  Execution Time  Period
@@ -78,7 +88,7 @@ P3 	      2 	            10
 =======  ==============  ======
 
 
-The taskset attributes are: 
+The task set attributes are: 
 
  * Mandatory: ``algo``, ``tasks``;
  * Optional: None
@@ -97,7 +107,7 @@ The task attributes are:
 Output File: Schedule YAML file
 *******************************
 
-The following example describes a taskset of 3 tasks. 
+The following example describes a task set of 3 tasks. 
 
 The schedule attributes are: 
 

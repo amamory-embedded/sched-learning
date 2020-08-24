@@ -17,7 +17,7 @@ following task scheduling algorithms:
 
 Check out further documentation in `RtD <https://yatss.readthedocs.io/>`_
 
-Main features
+Main Features
 =============
 
 * Easy to adapt to new task scheduling algorithms;

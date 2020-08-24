@@ -81,5 +81,7 @@ def main():
 
     plot_gantt(sched, verbose=args.verbose)
 
+    return sched
+
 if __name__ == "__main__":
     main()
