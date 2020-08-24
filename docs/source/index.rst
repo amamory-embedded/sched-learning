@@ -124,6 +124,15 @@ The task attributes are:
   :language: yaml
   :linenos:
 
+Other Simulators
+================
+
+YATSS is just a toy simulator. I made it only for learning more about RTOS scheduling algorithms.
+If you are looking for something more fancy, take a look ate these other options:
+
+  * `SimSO <https://github.com/MaximeCheramy/simso>`_;
+  * `MCRTsim <http://resl.csie.nptu.edu.tw/dokuwiki/doku.php>`_;
+  * `Cheddar <http://beru.univ-brest.fr/~singhoff/cheddar/>`_.
 
 API Doc
 =======

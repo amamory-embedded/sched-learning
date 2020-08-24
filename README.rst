@@ -23,6 +23,7 @@ Main Features
 * Easy to adapt to new task scheduling algorithms;
 * Easy to use input/ouput file formats based on YAML;
 * Gantt-like schedule plot using plotly;
+* Support single core only;
 * Documentation.
 
 .. |Docs Badge| image:: https://readthedocs.org/projects/yatss/badge/?version=latest
