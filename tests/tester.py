@@ -6,6 +6,14 @@ import sys
 import glob
 import filecmp
 
+#sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+#
+# from lib.Tasks import ManualTask, TaskMaster
+
+# tests
+# https://github.com/guilyx/gantt-trampoline/blob/master/tests/test_auto_tasks.py
+
+
 # TODO: https://github.com/seperman/deepdiff to compare both YAMLs
 
 #sys.path.insert(0, os.path.abspath('../src'))
