@@ -1,5 +1,10 @@
 |Docs Badge| 
 
+.. image:: https://www.codefactor.io/repository/github/amamory-embedded/sched-learning/badge
+   :target: https://www.codefactor.io/repository/github/amamory-embedded/sched-learning
+   :alt: CodeFactor
+
+
 .. it is possible to use Markdown with https://github.com/crossnox/m2r2 sphinx extension
 .. it is possible to use blockdiag with http://blockdiag.com/en/blockdiag/sphinxcontrib.html sphinx extension
 .. RST primer https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
