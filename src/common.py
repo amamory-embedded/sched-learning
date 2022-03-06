@@ -259,7 +259,7 @@ def plot_gantt(sched, verbose = False):
 
     # format the data appearing in the mouse hover feature
     fig.update_traces(
-        hovertemplate = "Start:%{customdata[0]}<br>Start: %{customdata[1]}<br>Duration: %{customdata[2]}"
+        hovertemplate = "Start:%{customdata[0]}<br>End: %{customdata[1]}<br>Duration: %{customdata[2]}"
     )
     
     # this part converts dates into ticks
